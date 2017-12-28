@@ -11,12 +11,12 @@ public class Board {
             rows.add(new BoardRow());
         }
     }
+
     Figure getFigure(int x, int y){
         return rows.get(y).getFigure(x);
     }
 
     void setFigure(int x, int y, Figure f){
-        rows.remove(y);
-        rows.add(y,setFigure(x,f););
+        rows.get(y).setFigure(x,f);
     }
 }
