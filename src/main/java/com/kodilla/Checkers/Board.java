@@ -20,16 +20,22 @@ public class Board {
         rows.get(y).setFigure(x,f);
     }
 
+    void move(int x1, int y1, int x2, int y2){
+        Figure figure = getFigure(x1,y1);
+        setFigure(x1, y1, new None());
+        setFigure(x2, y2, figure);
+    }
+
     @Override
     public String toString(){
         String board = "__|A |B |C |D |E |F |G |H |\n";
         Figure figure = null;
 
-        for (int x=0; x<8; x++){
+        for (int y=0; y<8; y++){
             //draw 1-8 numbers
-            board = board + (x+1) + " |";
+            board = board + (y+1) + " |";
 
-            for (int y=0; y<8; y++){
+            for (int x=0; x<8; x++){
                 figure = getFigure(x,y);
                 board = board + figure.getColor();
 
