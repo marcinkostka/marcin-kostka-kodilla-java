@@ -7,6 +7,7 @@ public class Checkers {
         board.initBoard(board);
         System.out.println(board);
 
+        /*
         board.move(1,1,2,2);
         //System.out.println(board);
         board.move(6,6,5,5);
@@ -19,5 +20,6 @@ public class Checkers {
         board.move(4,4,2,2);
         board.move(4,2,3,1);
         System.out.println(board);
+        */
     }
 }

@@ -43,50 +43,8 @@ public class Board {
     boolean isMoveAvailable(int x1, int y1, int x2, int y2){
         Figure figureStartPos = getFigure(x1,y1);
         Figure figureEndPos = getFigure(x2,y2);
+        return true;
 
-        // TODO: 2017-12-29 zablokować ruchy do tyłu, wykonać transformacja na królową
-        //czyja tura biały/czarny
-        if(figureStartPos.getColor() != color){
-            return false;
-        } else {
-            //ruch pionkiem
-            if (figureStartPos instanceof Pawn)
-            {
-                //pole docelowe puste
-                if (figureEndPos.getColor() == "N"){
-                    if((Math.abs(x1-x2) == 1) && (Math.abs(y1-y2) == 1)){
-                        return true;
-                    //bicie
-                    } else if((Math.abs(x1-x2) == 2) && (Math.abs(y1-y2) == 2) ){
-                        if (x2 > x1){
-                            if ((getFigure((x1+1),(y1+1)).getColor()!= "N") && (getFigure((x1+1),(y1+1)).getColor()!= figureStartPos.getColor())){
-                                setFigure((x1+1),(y1+1), new None());
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else if (x1 > x2){
-                            if ((getFigure((x1-1),(y1-1)).getColor()!= "N") && (getFigure((x1-1),(y1-1)).getColor()!= figureStartPos.getColor())){
-                                setFigure((x1-1),(y1-1), new None());
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-                // TODO: 2017-12-29  ruch krolowa
-            } else if (figureStartPos instanceof Queen){
-                return false;
-            } else {
-                return false;
-            }
-        }
     }
 
     void move(int x1, int y1, int x2, int y2){
