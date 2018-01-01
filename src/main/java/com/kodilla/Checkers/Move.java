@@ -1,24 +1,22 @@
 package com.kodilla.Checkers;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Move {
 
     private int x1,x2,y1,y2;
     Figure f;
     Board board;
-    String color;
 
     private List<Move> movesList = new ArrayList<>();
 
-    public Move(int x1, int y1, int x2, int y2){
+    public Move(int x1, int y1, int x2, int y2, Board board){
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
-    }
-    //do testów
-    public Move(){
+        this.board = board;
     }
 
     public int getX1() {
@@ -38,14 +36,17 @@ public class Move {
     }
 
     @Override
-    public boolean equals(Object o){
-        Move m = (Move) o;
-        if (m.getX1() == x1 && m.getX2() == x2 && m.getY1() == y1 && m.getY2() == y2){
-            return true;
-        } else {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move = (Move) o;
+        return x1 == move.x1 &&
+                x2 == move.x2 &&
+                y1 == move.y1 &&
+                y2 == move.y2;
     }
+
+
 
     public List<Move> availableMoveList(){
 // TODO: 2017-12-31 bicie piona, ruchy krolowa
@@ -54,19 +55,19 @@ public class Move {
             for (int col = 0; col < 8; col++){
                 //w prawo bialymi
                 if (movePossible(col, row, col+1, row+1)){
-                    movesList.add(new Move(col, row, col+1, row+1));
+                    movesList.add(new Move(col, row, col+1, row+1, board));
                 }
                 //w lewo białymi
                 if (movePossible(col, row, col-1, row+1)){
-                    movesList.add(new Move(col, row, col-1, row+1));
+                    movesList.add(new Move(col, row, col-1, row+1, board));
                 }
                 //w prawo czarnymi
                 if (movePossible(col, row, col+1, row-1)){
-                    movesList.add(new Move(col, row, col-1, row+1));
+                    movesList.add(new Move(col, row, col-1, row+1, board));
                 }
                 //w lewo czarnymi
                 if (movePossible(col, row, col-1, row-1)){
-                    movesList.add(new Move(col, row, col-1, row+1));
+                    movesList.add(new Move(col, row, col-1, row+1, board));
                 }
             }
         }
@@ -76,15 +77,20 @@ public class Move {
     private boolean movePossible(int x1, int y1, int x2, int y2){
 
         //czy ruchy w obrebie planszy
-        if( x1 < 0 || y1 < 0 || x2 > 7 || y2 > 7 ){
+
+        if (board.getFigure(x1,y1) instanceof None){
+            return false;
+        }
+
+        if( x1 < 0 || y1 < 0 || x2 > 7 || y2 > 7  || x2 < 0 || y2 < 0 || x1 > 7 || y1 > 7){
             return false;
         }
         //czy docelowe pole puste
-        if(board.getFigure(x2,y2).getColor() != "N"){
+        if(!(board.getFigure(x2,y2) instanceof None)){
             return false;
         }
         //czy tura białych - color przestawiamy w Board.move() po wykonaniu ruchu
-        if (color == "W"){
+        if (board.getColor() == "W"){
             if (board.getFigure(x1,y1).getColor() == "W" && y2 > y1){
                 //białe poruszaja sie w dół index y2 musi byc wiekszy
                 return true;
@@ -92,7 +98,7 @@ public class Move {
                 return false;
             }
 
-        } else if (color == "B") {
+        } else if (board.getColor() == "B") {
             if (board.getFigure(x1,y1).getColor() == "B" && y2 < y1){
                 return true;
             } else {

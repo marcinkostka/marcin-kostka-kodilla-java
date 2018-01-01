@@ -12,6 +12,10 @@ public class Board {
         }
     }
 
+    public String getColor() {
+        return color;
+    }
+
     Figure getFigure(int x, int y){
         return rows.get(y).getFigure(x);
     }
@@ -34,22 +38,9 @@ public class Board {
 
 
     boolean isMoveAvailable(int x1, int y1, int x2, int y2){
-        Move m = new Move(x1, y1, x2, y2);
+        Move m = new Move(x1, y1, x2, y2, this);
         List<Move> movesList = m.availableMoveList();
-
-        if (movesList.size()>0){
-            for(Move mList: movesList){
-                if(mList.equals(m)){
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } else {
-            return false;
-        }
-        //missing return statement
-        return false;
+        return movesList.contains(m);
     }
 
     void move(int x1, int y1, int x2, int y2){
