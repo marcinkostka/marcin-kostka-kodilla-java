@@ -5,8 +5,7 @@ import java.util.List;
 
 public class Board {
     private List<BoardRow> rows = new ArrayList<>();
-    String color = "W";
-
+    public String color = "W";
     public Board(){
         for (int i=0; i<8; i++){
             rows.add(new BoardRow());
@@ -22,33 +21,38 @@ public class Board {
     }
 
     void initBoard(Board board){
-        board.setFigure(0,0, new Pawn("W"));
-        board.setFigure(2,0, new Pawn("W"));
-        board.setFigure(4,0, new Pawn("W"));
-        board.setFigure(6,0, new Pawn("W"));
-        board.setFigure(1,1, new Pawn("W"));
-        board.setFigure(3,1, new Pawn("W"));
-        board.setFigure(5,1, new Pawn("W"));
-        board.setFigure(7,1, new Pawn("W"));
-        board.setFigure(0,6, new Pawn("B"));
-        board.setFigure(2,6, new Pawn("B"));
-        board.setFigure(4,6, new Pawn("B"));
-        board.setFigure(6,6, new Pawn("B"));
-        board.setFigure(1,7, new Pawn("B"));
-        board.setFigure(3,7, new Pawn("B"));
-        board.setFigure(5,7, new Pawn("B"));
-        board.setFigure(7,7, new Pawn("B"));
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++){
+                if (col % 2 == row % 2 && row < 2) {
+                    board.setFigure(col, row, new Pawn("W"));
+                } else if (col % 2 == row % 2 && row > 5) {
+                    board.setFigure(col, row, new Pawn("B"));
+                }
+            }
+        }
     }
 
-    boolean isMoveAvailable(int x1, int y1, int x2, int y2){
-        Figure figureStartPos = getFigure(x1,y1);
-        Figure figureEndPos = getFigure(x2,y2);
-        return true;
 
+    boolean isMoveAvailable(int x1, int y1, int x2, int y2){
+        Move m = new Move(x1, y1, x2, y2);
+        List<Move> movesList = m.availableMoveList();
+
+        if (movesList.size()>0){
+            for(Move mList: movesList){
+                if(mList.equals(m)){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        //missing return statement
+        return false;
     }
 
     void move(int x1, int y1, int x2, int y2){
-
         if (isMoveAvailable(x1,y1,x2,y2)){
             Figure figure = getFigure(x1,y1);
             setFigure(x1, y1, new None());
@@ -62,7 +66,11 @@ public class Board {
         } else {
             System.out.println("Move is not available\n");
         }
-
+        /*
+        Figure figure = getFigure(x1,y1);
+        setFigure(x1, y1, new None());
+        setFigure(x2, y2, figure);
+        */
     }
 
     @Override
