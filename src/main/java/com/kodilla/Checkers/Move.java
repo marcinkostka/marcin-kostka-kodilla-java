@@ -1,7 +1,6 @@
 package com.kodilla.Checkers;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Move {
 
@@ -17,6 +16,13 @@ public class Move {
         this.y1 = y1;
         this.y2 = y2;
         this.board = board;
+    }
+
+    public Move(int x1, int y1, int x2, int y2) {
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
     }
 
     public int getX1() {
@@ -46,7 +52,18 @@ public class Move {
                 y2 == move.y2;
     }
 
+    public static Move convertCoords(String coords){
+        String col = "ABCDEFGH";
+        String row = "12345678";
+        int x1, x2, y1, y2;
 
+        x1 = col.indexOf(coords.substring(0,1));
+        y1 = row.indexOf(coords.substring(1,2));
+        x2 = col.indexOf(coords.substring(2,3));
+        y2 = row.indexOf(coords.substring(3,4));
+
+        return new Move(x1, y1, x2, y2);
+    }
 
     public List<Move> availableMoveList(){
 // TODO: 2017-12-31 bicie piona, ruchy krolowa
@@ -63,11 +80,11 @@ public class Move {
                 }
                 //w prawo czarnymi
                 if (movePossible(col, row, col+1, row-1)){
-                    movesList.add(new Move(col, row, col-1, row+1, board));
+                    movesList.add(new Move(col, row, col+1, row-1, board));
                 }
                 //w lewo czarnymi
                 if (movePossible(col, row, col-1, row-1)){
-                    movesList.add(new Move(col, row, col-1, row+1, board));
+                    movesList.add(new Move(col, row, col-1, row-1, board));
                 }
             }
         }

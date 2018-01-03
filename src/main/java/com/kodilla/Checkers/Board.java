@@ -36,7 +36,6 @@ public class Board {
         }
     }
 
-
     boolean isMoveAvailable(int x1, int y1, int x2, int y2){
         Move m = new Move(x1, y1, x2, y2, this);
         List<Move> movesList = m.availableMoveList();
@@ -48,20 +47,19 @@ public class Board {
             Figure figure = getFigure(x1,y1);
             setFigure(x1, y1, new None());
             setFigure(x2, y2, figure);
+            System.out.println(this);
             //nowa tura - zmiana wykonujacego ruch
             if (color == "W"){
+                System.out.println("Move: black.\nType coords in format A1B2 to move or Q to quit");
                 color = "B";
             } else {
                 color = "W";
+                System.out.println("Move: white.\nType coords in format A1B2 to move or Q to quit");
             }
         } else {
+            System.out.println(this);
             System.out.println("Move is not available\n");
         }
-        /*
-        Figure figure = getFigure(x1,y1);
-        setFigure(x1, y1, new None());
-        setFigure(x2, y2, figure);
-        */
     }
 
     @Override
