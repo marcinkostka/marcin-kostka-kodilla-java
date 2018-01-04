@@ -6,10 +6,16 @@ import java.util.List;
 public class Board {
     private List<BoardRow> rows = new ArrayList<>();
     public String color = "W";
+    public boolean pawnBeating = false;
+
     public Board(){
         for (int i=0; i<8; i++){
             rows.add(new BoardRow());
         }
+    }
+
+    public void setPawnBeating(boolean pawnBeating) {
+        this.pawnBeating = pawnBeating;
     }
 
     public String getColor() {
@@ -36,6 +42,11 @@ public class Board {
         }
     }
 
+    void initBoard2(Board board){
+        board.setFigure(3, 4, new Pawn("W"));
+        board.setFigure(2, 5, new Pawn("B"));
+    }
+
     boolean isMoveAvailable(int x1, int y1, int x2, int y2){
         Move m = new Move(x1, y1, x2, y2, this);
         List<Move> movesList = m.availableMoveList();
@@ -47,6 +58,30 @@ public class Board {
             Figure figure = getFigure(x1,y1);
             setFigure(x1, y1, new None());
             setFigure(x2, y2, figure);
+
+            //bicie białymi
+            if (pawnBeating && color == "W"){
+                if(x2 < x1){
+                    setFigure(x1-1, y1+1, new None());
+                    pawnBeating = false;
+                }
+                if(x2 > x1){
+                    setFigure(x1+1, y1+1, new None());
+                    pawnBeating = false;
+                }
+            }
+            // bicie czarnymi
+            if (pawnBeating && color == "B"){
+                if(x2 < x1){
+                    setFigure(x1-1, y1-1, new None());
+                    pawnBeating = false;
+                }
+                if(x2 > x1){
+                    setFigure(x1+1, y1-1, new None());
+                    pawnBeating = false;
+                }
+            }
+
             System.out.println(this);
             //nowa tura - zmiana wykonujacego ruch
             if (color == "W"){

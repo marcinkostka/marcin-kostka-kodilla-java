@@ -18,13 +18,6 @@ public class Move {
         this.board = board;
     }
 
-    public Move(int x1, int y1, int x2, int y2) {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
-    }
-
     public int getX1() {
         return x1;
     }
@@ -52,7 +45,7 @@ public class Move {
                 y2 == move.y2;
     }
 
-    public static Move convertCoords(String coords){
+    public static Move convertCoords(String coords, Board board){
         String col = "ABCDEFGH";
         String row = "12345678";
         int x1, x2, y1, y2;
@@ -62,7 +55,7 @@ public class Move {
         x2 = col.indexOf(coords.substring(2,3));
         y2 = row.indexOf(coords.substring(3,4));
 
-        return new Move(x1, y1, x2, y2);
+        return new Move(x1, y1, x2, y2, board);
     }
 
     public List<Move> availableMoveList(){
@@ -86,19 +79,57 @@ public class Move {
                 if (movePossible(col, row, col-1, row-1)){
                     movesList.add(new Move(col, row, col-1, row-1, board));
                 }
+                //############### Bicie #########################################
+                if (pawnBeating(col, row, col+2, row+2)){
+                    movesList.add(new Move(col, row, col+2, row+2, board));
+                }
+                if (pawnBeating(col, row, col-2, row+2)){
+                    movesList.add(new Move(col, row, col-2, row+2, board));
+                }
+                if (pawnBeating(col, row, col+2, row-2)){
+                    movesList.add(new Move(col, row, col+2, row-2, board));
+                }
+                if (pawnBeating(col, row, col-2, row-2)){
+                    movesList.add(new Move(col, row, col-2, row-2, board));
+                }
             }
         }
         return movesList;
     }
 
+    private boolean pawnBeating(int x1, int y1, int x2, int y2){
+        if (movePossible(x1, y1, x2, y2)){
+            //bicie w prawo białymi
+            if (board.getColor() == "W" && board.getFigure(x2 - 1, y2 - 1).getColor() == "B" && x2 > x1) {
+                board.setPawnBeating(true);
+                return true;
+            }
+            //bicie w lewo białymi
+            if (board.getColor() == "W" && board.getFigure(x2 + 1, y2 - 1).getColor() == "B" && x2 < x1) {
+                board.setPawnBeating(true);
+                return true;
+            }
+            //bicie w prawo czarnymi
+            if (board.getColor() == "B" && board.getFigure(x2 - 1, y2 + 1).getColor() == "W" && x2 > x1) {
+                board.setPawnBeating(true);
+                return true;
+            }
+            //bicie w lewo czarnymi
+            if (board.getColor() == "B" && board.getFigure(x2+1,y2+1).getColor() == "W" && x2 < x1) {
+                board.setPawnBeating(true);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean movePossible(int x1, int y1, int x2, int y2){
 
-        //czy ruchy w obrebie planszy
-
+        //czy ruszam figura
         if (board.getFigure(x1,y1) instanceof None){
             return false;
         }
-
+        //czy ruchy w obrebie planszy
         if( x1 < 0 || y1 < 0 || x2 > 7 || y2 > 7  || x2 < 0 || y2 < 0 || x1 > 7 || y1 > 7){
             return false;
         }
@@ -114,7 +145,6 @@ public class Move {
             } else {
                 return false;
             }
-
         } else if (board.getColor() == "B") {
             if (board.getFigure(x1,y1).getColor() == "B" && y2 < y1){
                 return true;

@@ -20,7 +20,7 @@ public class Checkers {
                 gameFinished = true;
             } else {
                 if (coords.length() == 4){
-                    Move m = Move.convertCoords(coords);
+                    Move m = Move.convertCoords(coords, board);
                     board.move(m.getX1(),m.getY1(),m.getX2(),m.getY2());
                 } else {
                     System.out.println(board);
