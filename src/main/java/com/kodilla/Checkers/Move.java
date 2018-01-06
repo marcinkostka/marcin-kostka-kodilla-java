@@ -59,25 +59,28 @@ public class Move {
     }
 
     public List<Move> availableMoveList(){
-// TODO: 2017-12-31 bicie piona, ruchy krolowa
+// TODO: 2017-12-31 ruchy krolowa
 
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++){
-                //w prawo bialymi
-                if (movePossible(col, row, col+1, row+1)){
-                    movesList.add(new Move(col, row, col+1, row+1, board));
-                }
-                //w lewo białymi
-                if (movePossible(col, row, col-1, row+1)){
-                    movesList.add(new Move(col, row, col-1, row+1, board));
-                }
-                //w prawo czarnymi
-                if (movePossible(col, row, col+1, row-1)){
-                    movesList.add(new Move(col, row, col+1, row-1, board));
-                }
-                //w lewo czarnymi
-                if (movePossible(col, row, col-1, row-1)){
-                    movesList.add(new Move(col, row, col-1, row-1, board));
+                //jesli trwa bicie, i jest możliwość bicia - musimy bić
+                if(!board.getContinueBeating()) {
+                    //w prawo bialymi
+                    if (movePossible(col, row, col + 1, row + 1)) {
+                        movesList.add(new Move(col, row, col + 1, row + 1, board));
+                    }
+                    //w lewo białymi
+                    if (movePossible(col, row, col - 1, row + 1)) {
+                        movesList.add(new Move(col, row, col - 1, row + 1, board));
+                    }
+                    //w prawo czarnymi
+                    if (movePossible(col, row, col + 1, row - 1)) {
+                        movesList.add(new Move(col, row, col + 1, row - 1, board));
+                    }
+                    //w lewo czarnymi
+                    if (movePossible(col, row, col - 1, row - 1)) {
+                        movesList.add(new Move(col, row, col - 1, row - 1, board));
+                    }
                 }
                 //############### Bicie #########################################
                 if (pawnBeating(col, row, col+2, row+2)){
@@ -100,24 +103,32 @@ public class Move {
     private boolean pawnBeating(int x1, int y1, int x2, int y2){
         if (movePossible(x1, y1, x2, y2)){
             //bicie w prawo białymi
-            if (board.getColor() == "W" && board.getFigure(x2 - 1, y2 - 1).getColor() == "B" && x2 > x1) {
-                board.setPawnBeating(true);
-                return true;
+            if (!(x2-1 < 0  || y2-1 < 0)) {
+                if (board.getColor() == "W" && board.getFigure(x2 - 1, y2 - 1).getColor() == "B" && x2 > x1) {
+                    board.setPawnBeating(true);
+                    return true;
+                }
             }
             //bicie w lewo białymi
-            if (board.getColor() == "W" && board.getFigure(x2 + 1, y2 - 1).getColor() == "B" && x2 < x1) {
-                board.setPawnBeating(true);
-                return true;
+            if (!(x2+1 > 7  || y2-1 < 0)) {
+                if (board.getColor() == "W" && board.getFigure(x2 + 1, y2 - 1).getColor() == "B" && x2 < x1) {
+                    board.setPawnBeating(true);
+                    return true;
+                }
             }
             //bicie w prawo czarnymi
-            if (board.getColor() == "B" && board.getFigure(x2 - 1, y2 + 1).getColor() == "W" && x2 > x1) {
-                board.setPawnBeating(true);
-                return true;
+            if (!(x2-1 < 0  || y2+1 > 7)) {
+                if (board.getColor() == "B" && board.getFigure(x2 - 1, y2 + 1).getColor() == "W" && x2 > x1) {
+                    board.setPawnBeating(true);
+                    return true;
+                }
             }
             //bicie w lewo czarnymi
-            if (board.getColor() == "B" && board.getFigure(x2+1,y2+1).getColor() == "W" && x2 < x1) {
-                board.setPawnBeating(true);
-                return true;
+            if (!(x2+1 > 7  || y2+1 > 7)) {
+                if (board.getColor() == "B" && board.getFigure(x2 + 1, y2 + 1).getColor() == "W" && x2 < x1) {
+                    board.setPawnBeating(true);
+                    return true;
+                }
             }
         }
         return false;

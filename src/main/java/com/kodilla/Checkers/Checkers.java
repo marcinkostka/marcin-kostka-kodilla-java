@@ -2,6 +2,11 @@ package com.kodilla.Checkers;
 
 import java.util.Scanner;
 
+/*Zasady:
+1. bicie nie jest obowiązkowe
+2. w trakcie bicia, każde kolejne możliwe jest obowiązkowe
+*/
+
 public class Checkers {
     public static void main(String[] args) {
 
