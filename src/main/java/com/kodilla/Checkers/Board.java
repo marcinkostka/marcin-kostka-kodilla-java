@@ -48,13 +48,14 @@ public class Board {
     }
 
     void initBoard2(Board board){
-        board.setFigure(4, 1, new Pawn("W"));
-        board.setFigure(1, 1, new Pawn("W"));
-        board.setFigure(3, 2, new Pawn("B"));
-        board.setFigure(5, 2, new Pawn("B"));
-        board.setFigure(3, 4, new Pawn("B"));
-        board.setFigure(3, 6, new Pawn("B"));
-        board.setFigure(5, 6, new Pawn("B"));
+        board.setFigure(5, 1, new Pawn("W"));
+        board.setFigure(4, 0, new Queen("W"));
+        board.setFigure(1, 1, new Queen("W"));
+        board.setFigure(2, 2, new Pawn("B"));
+        board.setFigure(4, 2, new Pawn("B"));
+        board.setFigure(6, 4, new Queen("B"));
+        board.setFigure(4, 6, new Pawn("B"));
+        board.setFigure(6, 6, new Pawn("B"));
     }
 
     boolean isMoveAvailable(int x1, int y1, int x2, int y2){
@@ -77,7 +78,40 @@ public class Board {
                 setFigure(x2, y2, figure);
             }
 
-            if(Math.abs(x2-x1) == 2 && Math.abs(y2-y1) == 2) {
+            //bicie krolowa
+            if (figure instanceof Queen){
+                if (x1<x2 && y1<y2){
+                    for (int i = 1; i < x2-x1; i++){
+                        if (getFigure(x1+i,y1+i) instanceof Pawn || getFigure(x1+i,y1+i) instanceof Queen){
+                            setFigure(x1+i, y1+i, new None());
+                        }
+                    }
+                    setFigure(x2, y2, figure);
+                }
+                if (x1<x2 && y1>y2){
+                    for (int i = 1; i < x2-x1; i++){
+                        if (getFigure(x1+i,y1-i) instanceof Pawn || getFigure(x1+i,y1-i) instanceof Queen){
+                            setFigure(x1+i, y1-i, new None());
+                        }
+                    }
+                }
+                if (x1>x2 && y1>y2){
+                    for (int i = 1; i < x1-x2; i++){
+                        if (getFigure(x1-i,y1-i) instanceof Pawn || getFigure(x1-i,y1-i) instanceof Queen){
+                            setFigure(x1-i, y1-i, new None());
+                        }
+                    }
+                }
+                if (x1>x2 && y1<y2){
+                    for (int i = 1; i < x1-x2; i++){
+                        if (getFigure(x1-i,y1+i) instanceof Pawn || getFigure(x1-i,y1+i) instanceof Queen){
+                            setFigure(x1-i, y1+i, new None());
+                        }
+                    }
+                }
+            }
+
+            if(figure instanceof Pawn && Math.abs(x2-x1) == 2 && Math.abs(y2-y1) == 2) {
                 //bicie białymi
                 if (pawnBeating && color == "W") {
                     if (x2 < x1) {
@@ -128,6 +162,9 @@ public class Board {
             }
 
             System.out.println(this);
+            Move m = new Move(0,0,0,0, this);
+            //m.queenMove(this);
+
             //nowa tura - zmiana wykonujacego ruch jeśli nie jestesmy w trakcie bicia
             if (color == "W" && !continueBeating){
                 System.out.println("Move: black.\nType coords in format A1B2 to move or Q to quit");

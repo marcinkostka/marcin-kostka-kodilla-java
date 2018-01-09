@@ -64,40 +64,163 @@ public class Move {
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++){
                 //jesli trwa bicie, i jest możliwość bicia - musimy bić
-                if(!board.getContinueBeating()) {
-                    //w prawo bialymi
-                    if (movePossible(col, row, col + 1, row + 1)) {
-                        movesList.add(new Move(col, row, col + 1, row + 1, board));
+                if (board.getFigure(col,row) instanceof Pawn) {
+                    if (!board.getContinueBeating()) {
+                        //w prawo bialymi
+                        if (movePossible(col, row, col + 1, row + 1)) {
+                            movesList.add(new Move(col, row, col + 1, row + 1, board));
+                        }
+                        //w lewo białymi
+                        if (movePossible(col, row, col - 1, row + 1)) {
+                            movesList.add(new Move(col, row, col - 1, row + 1, board));
+                        }
+                        //w prawo czarnymi
+                        if (movePossible(col, row, col + 1, row - 1)) {
+                            movesList.add(new Move(col, row, col + 1, row - 1, board));
+                        }
+                        //w lewo czarnymi
+                        if (movePossible(col, row, col - 1, row - 1)) {
+                            movesList.add(new Move(col, row, col - 1, row - 1, board));
+                        }
                     }
-                    //w lewo białymi
-                    if (movePossible(col, row, col - 1, row + 1)) {
-                        movesList.add(new Move(col, row, col - 1, row + 1, board));
+                    //############### Bicie #########################################
+                    if (pawnBeating(col, row, col + 2, row + 2)) {
+                        movesList.add(new Move(col, row, col + 2, row + 2, board));
                     }
-                    //w prawo czarnymi
-                    if (movePossible(col, row, col + 1, row - 1)) {
-                        movesList.add(new Move(col, row, col + 1, row - 1, board));
+                    if (pawnBeating(col, row, col - 2, row + 2)) {
+                        movesList.add(new Move(col, row, col - 2, row + 2, board));
                     }
-                    //w lewo czarnymi
-                    if (movePossible(col, row, col - 1, row - 1)) {
-                        movesList.add(new Move(col, row, col - 1, row - 1, board));
+                    if (pawnBeating(col, row, col + 2, row - 2)) {
+                        movesList.add(new Move(col, row, col + 2, row - 2, board));
+                    }
+                    if (pawnBeating(col, row, col - 2, row - 2)) {
+                        movesList.add(new Move(col, row, col - 2, row - 2, board));
                     }
                 }
-                //############### Bicie #########################################
-                if (pawnBeating(col, row, col+2, row+2)){
-                    movesList.add(new Move(col, row, col+2, row+2, board));
-                }
-                if (pawnBeating(col, row, col-2, row+2)){
-                    movesList.add(new Move(col, row, col-2, row+2, board));
-                }
-                if (pawnBeating(col, row, col+2, row-2)){
-                    movesList.add(new Move(col, row, col+2, row-2, board));
-                }
-                if (pawnBeating(col, row, col-2, row-2)){
-                    movesList.add(new Move(col, row, col-2, row-2, board));
+                if (board.getFigure(col,row) instanceof Queen) {
+                    queenMove(col,row);
                 }
             }
         }
         return movesList;
+    }
+
+    public void queenMove(int x1, int y1) {
+
+        int figOnLine = 0;
+        boolean stopMove = false;
+            //x1+1, y1+1; x1-1, y1-1; x1+1, y1-1; x1-1, y1+1
+        for (int i = 1; i < 8; i++) {
+            if (x1 + i < 8 && y1 + i < 8) {
+                if (board.getFigure(x1 + i, y1 + i) instanceof None && !stopMove) {
+                    movesList.add(new Move(x1, y1, x1 + i, y1 + i, board));
+                }
+                if (board.getFigure(x1 + i, y1 + i).getColor() == "B" && board.getColor() == "W" && !stopMove) {
+                    figOnLine++;
+                    if (figOnLine == 2) {
+                        stopMove = true;
+                    }
+                }
+                if (board.getFigure(x1 + i, y1 + i).getColor() == "W" && board.getColor() == "B" && !stopMove) {
+                    figOnLine++;
+                    if (figOnLine == 2) {
+                        stopMove = true;
+                    }
+                }
+                if (board.getFigure(x1 + i, y1 + i).getColor() == "W" && board.getColor() == "W" && !stopMove) {
+                    stopMove = true;
+                }
+                if (board.getFigure(x1 + i, y1 + i).getColor() == "B" && board.getColor() == "B" && !stopMove) {
+                    stopMove = true;
+                }
+            }
+        }
+        figOnLine = 0;
+        stopMove = false;
+
+        for (int i = 1; i < 8; i++) {
+            if (x1 - i >= 0 && y1 - i >= 0) {
+                if (board.getFigure(x1 - i, y1 - i) instanceof None && !stopMove) {
+                    movesList.add(new Move(x1, y1, x1 - i, y1 - i, board));
+                }
+                if (board.getFigure(x1 - i, y1 - i).getColor() == "B" && board.getColor() == "W" && !stopMove) {
+                    figOnLine++;
+                    if (figOnLine == 2) {
+                        stopMove = true;
+                    }
+                }
+                if (board.getFigure(x1 - i, y1 - i).getColor() == "W" && board.getColor() == "B" && !stopMove) {
+                    figOnLine++;
+                    if (figOnLine == 2) {
+                        stopMove = true;
+                    }
+                }
+                if (board.getFigure(x1 - i, y1 - i).getColor() == "W" && board.getColor() == "W" && !stopMove) {
+                    stopMove = true;
+                }
+                if (board.getFigure(x1 - i, y1 - i).getColor() == "B" && board.getColor() == "B" && !stopMove) {
+                    stopMove = true;
+                }
+            }
+        }
+
+        figOnLine = 0;
+        stopMove = false;
+
+        for (int i = 1; i < 8; i++) {
+            if (x1 + i < 8 && y1 - i >= 0) {
+                if (board.getFigure(x1 + i, y1 - i) instanceof None && !stopMove) {
+                    movesList.add(new Move(x1, y1, x1 + i, y1 - i, board));
+                }
+                if (board.getFigure(x1 + i, y1 - i).getColor() == "B" && board.getColor() == "W" && !stopMove) {
+                    figOnLine++;
+                    if (figOnLine == 2) {
+                        stopMove = true;
+                    }
+                }
+                if (board.getFigure(x1 + i, y1 - i).getColor() == "W" && board.getColor() == "B" && !stopMove) {
+                    figOnLine++;
+                    if (figOnLine == 2) {
+                        stopMove = true;
+                    }
+                }
+                if (board.getFigure(x1 + i, y1 - i).getColor() == "W" && board.getColor() == "W" && !stopMove) {
+                    stopMove = true;
+                }
+                if (board.getFigure(x1 + i, y1 - i).getColor() == "B" && board.getColor() == "B" && !stopMove) {
+                    stopMove = true;
+                }
+            }
+        }
+
+        figOnLine = 0;
+        stopMove = false;
+
+        for (int i = 1; i < 8; i++) {
+            if (x1 - i >= 0 && y1 + i < 8) {
+                if (board.getFigure(x1 - i, y1 + i) instanceof None && !stopMove) {
+                    movesList.add(new Move(x1, y1, x1 - i, y1 + i, board));
+                }
+                if (board.getFigure(x1 - i, y1 + i).getColor() == "B" && board.getColor() == "W" && !stopMove) {
+                    figOnLine++;
+                    if (figOnLine == 2) {
+                        stopMove = true;
+                    }
+                }
+                if (board.getFigure(x1 - i, y1 + i).getColor() == "W" && board.getColor() == "B" && !stopMove) {
+                    figOnLine++;
+                    if (figOnLine == 2) {
+                        stopMove = true;
+                    }
+                }
+                if (board.getFigure(x1 - i, y1 + i).getColor() == "W" && board.getColor() == "W" && !stopMove) {
+                    stopMove = true;
+                }
+                if (board.getFigure(x1 - i, y1 + i).getColor() == "B" && board.getColor() == "B" && !stopMove) {
+                    stopMove = true;
+                }
+            }
+        }
     }
 
     private boolean pawnBeating(int x1, int y1, int x2, int y2){

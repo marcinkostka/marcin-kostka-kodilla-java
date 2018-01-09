@@ -11,7 +11,7 @@ public class Checkers {
     public static void main(String[] args) {
 
         Board board = new Board();
-        board.initBoard(board);
+        board.initBoard2(board);
         System.out.println(board);
         System.out.println("Move: white.\nType coords in format A1B2 to move or Q to quit");
 
