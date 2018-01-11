@@ -20,10 +20,10 @@ class ShapeCollector {
     }
 
     public Shape getFigure(int n) {
-        if (figureList.size() == 0) {
-            return null;
-        } else {
+        if (n >= 0 && n < figureList.size()) {
             return figureList.get(n);
+        } else {
+            return null;
         }
     }
 
