@@ -63,18 +63,4 @@ public class ShapeCollectorTestSuite {
         //Then
         Assert.assertEquals(shape, result);
     }
-
-    @Test
-    public void testShowFigure() {
-        //Given
-        ShapeCollector shapeCollector = new ShapeCollector();
-        Shape shape = new Square(7);
-        shapeCollector.addFigure(shape);
-
-        //When
-        String result = shapeCollector.showFigures();
-
-        //Then
-        Assert.assertEquals("Figure name: Square ,field: 49.0", result);
-    }
 }

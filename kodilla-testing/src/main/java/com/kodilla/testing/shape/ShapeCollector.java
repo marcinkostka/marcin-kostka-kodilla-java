@@ -27,13 +27,9 @@ class ShapeCollector {
         }
     }
 
-    public String showFigures() {
-        String result = "";
+    public void showFigures() {
         for (Shape figure: figureList) {
-            System.out.println("Figure name: "+figure.getShapeName()+" ,field: "+figure.getField());
-            result = result + "Figure name: "+figure.getShapeName()+" ,field: "+figure.getField();
+            System.out.println("Figure name: " + figure.getShapeName() + " ,field: " + figure.getField());
         }
-        return result;
     }
-
 }
