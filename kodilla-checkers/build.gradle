@@ -1,5 +1,4 @@
-group 'com.kodilla'
-version '0.0.1-SNAPSHOT'
+version 'unspecified'
 
 apply plugin: 'java'
 
@@ -11,5 +10,4 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile('org.mockito:mockito-all:1.10.19')
 }
