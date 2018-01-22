@@ -176,7 +176,9 @@ public class BoardTestSuite {
         double avgTimePerTask = project.getTaskLists().stream()
                 .filter(inProgressTasks::contains)
                 .flatMap(tl -> tl.getTasks().stream())
-                .mapToDouble(t -> Math.abs(Period.between(LocalDate.now(), t.getCreated()).getDays()))
+                //.mapToDouble(t -> Math.abs(Period.between(LocalDate.now(), t.getCreated()).getDays()))
+                .map(task -> LocalDate.now().toEpochDay()-task.getCreated().toEpochDay())
+                .mapToInt(n -> n.intValue())
                 .average().getAsDouble();
 
         //Then
