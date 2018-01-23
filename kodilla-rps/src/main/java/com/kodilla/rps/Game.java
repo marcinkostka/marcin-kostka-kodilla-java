@@ -29,7 +29,6 @@ public class Game {
     public boolean playOneGame() {
         String userSelection = userCommunication.getUserSelection();
         if(userSelection.equals(UserCommunication.QUIT)) {
-
             currentRound = roundQuantity;
             return false;
         }
