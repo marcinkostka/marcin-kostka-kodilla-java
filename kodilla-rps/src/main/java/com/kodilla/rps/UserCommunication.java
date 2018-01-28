@@ -9,25 +9,72 @@ public class UserCommunication {
     public static final String SCISSORS = "S";
     public static final String QUIT = "Q";
     public static final String NEWGAME = "N";
+    public static final String EASY = "E";
+    public static final String MEDIUM = "M";
+    public static final String HARD = "H";
+
+    private static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
 
     public GameParameters initGame() {
         System.out.print("Enter human name: ");
         Scanner input = new Scanner(System.in);
-        String userName = input.next();
+        String userName = input.nextLine();
         System.out.print("Enter rounds number: ");
         int roundQuantity;
 
         while (true) {
-             roundQuantity = input.nextInt();
-             if (roundQuantity <= 0) {
-                 System.out.println("--> Rounds must be greater than ZERO ! <--");
-                 System.out.print("Enter correct rounds number: ");
-             } else {
-                 break;
-             }
-         }
+            String tmpInput = input.nextLine();
+            if (isInteger(tmpInput)){
+                roundQuantity = Integer.parseInt(tmpInput);
+                if (roundQuantity > 0) {
+                    break;
+                } else {
+                    System.out.println("--> Rounds must be greater than ZERO ! <--");
+                    System.out.print("Enter correct rounds number: ");
+                }
+            } else {
+                System.out.println("--> It's not a number ! <--");
+                System.out.print("Enter correct rounds number: ");
+            }
+        }
 
-        return new GameParameters(userName, roundQuantity);
+        String difficulty = null;
+        boolean difficultySelected = false;
+
+        while (!difficultySelected){
+            System.out.print("Select a game difficulty " +
+                    "(E)asy, (M)edium, (H)ard: ");
+            difficulty = input.next().toUpperCase();
+
+            switch (difficulty) {
+                case EASY:
+                    System.out.println("Player selected EASY");
+                    difficulty = EASY;
+                    difficultySelected = true;
+                    break;
+                case MEDIUM:
+                    System.out.println("Player selected MEDIUM");
+                    difficulty = MEDIUM;
+                    difficultySelected = true;
+                    break;
+                case HARD:
+                    System.out.println("Player selected HARD");
+                    difficulty = HARD;
+                    difficultySelected = true;
+                    break;
+                default:
+                        System.out.println("Wrong selection");
+            }
+        }
+
+        return new GameParameters(userName, roundQuantity, difficulty);
     }
 
     public String getUserSelection(Boolean gameOver) {
@@ -60,7 +107,7 @@ public class UserCommunication {
         }
 
         while (gameOver) {
-            System.out.println("Type N to New Game or Q to Quit");
+            System.out.print("Enter your selection (N)ew Game or (Q)uit: ");
             Scanner scanner = new Scanner(System.in);
             userSelection = scanner.nextLine().toUpperCase();
 

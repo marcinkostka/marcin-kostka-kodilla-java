@@ -4,10 +4,12 @@ public class GameParameters {
 
     private String userName;
     private int roundQuantity;
+    private String difficulty;
 
-    public GameParameters(String userName, int roundQuantity) {
+    public GameParameters(String userName, int roundQuantity, String difficulty) {
         this.userName = userName;
         this.roundQuantity = roundQuantity;
+        this.difficulty = difficulty;
     }
 
     public String getUserName() {
@@ -16,5 +18,9 @@ public class GameParameters {
 
     public int getRoundQuantity() {
         return roundQuantity;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
     }
 }

@@ -14,6 +14,7 @@ public class Game {
     private String humanName;
     private int roundQuantity;
     private int currentRound;
+    private String difficulty;
 
     private int humanScore, computerScore;
     UserCommunication userCommunication = new UserCommunication();
@@ -26,6 +27,8 @@ public class Game {
         GameParameters gp = userCommunication.initGame();
         humanName = gp.getUserName();
         roundQuantity = gp.getRoundQuantity();
+        difficulty = gp.getDifficulty();
+
         Game.NEW_GAME = false;
         Game.GAME_OVER = false;
         currentRound = 0;
@@ -39,14 +42,14 @@ public class Game {
             QUIT_GAME = true;
             return false;
         }
-
         if(userSelection.equals(UserCommunication.NEWGAME)) {
             NEW_GAME = true;
             return false;
         }
 
-        String computerSelection = generateSelection();
+        String computerSelection = generateSelection(userSelection, difficulty);
         String winner = selectWinner(userSelection, computerSelection);
+
         if (winner.equals(HUMAN)) {
             humanScore++;
             System.out.println("Player wins!");
@@ -85,10 +88,57 @@ public class Game {
         }
         return null;
     }
+/*
 
     private String generateSelection() {
         Random rnd = new Random();
         int rndValue = rnd.nextInt(3);
+
+        switch (rndValue) {
+            case 0:
+                System.out.println("Computer selected ROCK");
+                return UserCommunication.ROCK;
+            case 1:
+                System.out.println("Computer selected PAPER");
+                return UserCommunication.PAPER;
+            case 2:
+                System.out.println("Computer selected SCISSORS");
+                return UserCommunication.SCISSORS;
+            default: return null;
+        }
+    }
+*/
+
+
+    private String generateSelection(String userSelection, String difficulty) {
+        Random rnd = new Random();
+        int rndValue = 0;
+        int[] array = {};
+        int[] easyArray = {0,1,2,2,0,0,1,2,0,1,1,2};
+        int[] hardArray = {0,1,1,2,0,1,2,2,0,0,1,2};
+
+        switch (difficulty) {
+            case UserCommunication.EASY:
+                array = easyArray;
+                break;
+            case UserCommunication.HARD:
+                array = hardArray;
+                break;
+        }
+
+        if (!difficulty.equals(UserCommunication.MEDIUM)) {
+            if (userSelection.equals(UserCommunication.ROCK)) {
+                rndValue = array[rnd.nextInt(4)];
+            }
+            if (userSelection.equals(UserCommunication.PAPER)) {
+                rndValue = array[rnd.nextInt(4) + 4];
+            }
+            if (userSelection.equals(UserCommunication.SCISSORS)) {
+                rndValue = array[rnd.nextInt(4) + 8];
+            }
+        } else {
+            rndValue = rnd.nextInt(3);
+        }
 
         switch (rndValue) {
             case 0:
