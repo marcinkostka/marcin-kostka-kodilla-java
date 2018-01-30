@@ -11,21 +11,19 @@ public class Game {
     public static Boolean NEW_GAME = false;
     public static Boolean GAME_OVER = false;
 
-    private String humanName;
     private int roundQuantity;
     private int currentRound;
     private String difficulty;
 
     private int humanScore, computerScore;
-    UserCommunication userCommunication = new UserCommunication();
+    private UserCommunication userCommunication = new UserCommunication();
 
 
-    public Game() {
+    Game() {
     }
 
     public void initGame(){
         GameParameters gp = userCommunication.initGame();
-        humanName = gp.getUserName();
         roundQuantity = gp.getRoundQuantity();
         difficulty = gp.getDifficulty();
 
@@ -36,7 +34,7 @@ public class Game {
         computerScore = 0;
     }
 
-    public boolean playOneGame() {
+    private boolean playOneGame() {
         String userSelection = userCommunication.getUserSelection(GAME_OVER);
         if(userSelection.equals(UserCommunication.QUIT)) {
             QUIT_GAME = true;
@@ -65,14 +63,14 @@ public class Game {
     }
 
     private String selectWinner(String userSelection, String computerSelection) {
-        if (userSelection.equals(userCommunication.ROCK)) {
+        if (userSelection.equals(UserCommunication.ROCK)) {
             switch (computerSelection) {
                 case UserCommunication.ROCK: return NOBODY;
                 case UserCommunication.PAPER: return COMPUTER;
                 case UserCommunication.SCISSORS: return HUMAN;
             }
 
-        } else if (userSelection.equals(userCommunication.PAPER)) {
+        } else if (userSelection.equals(UserCommunication.PAPER)) {
             switch (computerSelection) {
                 case UserCommunication.SCISSORS: return COMPUTER;
                 case UserCommunication.ROCK: return HUMAN;
@@ -88,27 +86,6 @@ public class Game {
         }
         return null;
     }
-/*
-
-    private String generateSelection() {
-        Random rnd = new Random();
-        int rndValue = rnd.nextInt(3);
-
-        switch (rndValue) {
-            case 0:
-                System.out.println("Computer selected ROCK");
-                return UserCommunication.ROCK;
-            case 1:
-                System.out.println("Computer selected PAPER");
-                return UserCommunication.PAPER;
-            case 2:
-                System.out.println("Computer selected SCISSORS");
-                return UserCommunication.SCISSORS;
-            default: return null;
-        }
-    }
-*/
-
 
     private String generateSelection(String userSelection, String difficulty) {
         Random rnd = new Random();
@@ -165,6 +142,7 @@ public class Game {
             System.out.println("----------------------------------------");
 
             if (currentRound == roundQuantity) {
+
                 System.out.print("Game Over: ");
                 if (computerScore > humanScore){
                     System.out.println("Computer wins: "
@@ -181,7 +159,6 @@ public class Game {
                 GAME_OVER = true;
                 playOneGame();
             }
-
         }
     }
 }
