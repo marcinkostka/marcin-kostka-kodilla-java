@@ -1,25 +1,34 @@
 package com.kodilla.good.patterns.food2door;
 
-public class OrderProcessor {
-    private DeliveryProcessSupport deliveryProcessSupport;
-    private OrderService orderService;
+import java.util.List;
 
-    public OrderProcessor(DeliveryProcessSupport deliveryProcessSupport, OrderService orderService) {
-        this.deliveryProcessSupport = deliveryProcessSupport;
-        this.orderService = orderService;
+public class OrderProcessor {
+    private FoodProvider foodProvider;
+
+    OrderProcessor(FoodProvider foodProvider) {
+        this.foodProvider = foodProvider;
     }
 
+    private void orderTrueResponse(FoodProvider foodProvider, List<Product> products2delivery) {
+        System.out.println("Thanks for order in " +
+                foodProvider.getName() + ". Your order:");
 
-    public OrderDto process(final OrderRequest orderRequest) {
-        boolean isOrder = orderService.order(orderRequest.getFoodProvider(), orderRequest.getProducts2delivery());
-
-        if(isOrder) {
-            deliveryProcessSupport.process(orderRequest.foodProvider,orderRequest.getProducts2delivery());
-            //orderRepository.createOrder(orderRequest.getUser(), orderRequest.getProducts());
-            return new OrderDto(orderRequest.getFoodProvider(), true);
-        } else {
-            return new OrderDto(orderRequest.getFoodProvider(), false);
+        for (Product product : products2delivery) {
+            System.out.println(product.getName() + " " + product.getQuantity() +
+                    " pcs " + product.getQuantity() * product.getPrice() + "$");
         }
     }
 
+    public void process(final OrderRequest orderRequest) {
+        boolean isOrderAccepted = foodProvider.process(orderRequest.getFoodProvider(),orderRequest.getProducts2delivery());
+
+        if(isOrderAccepted) {
+            orderTrueResponse(orderRequest.getFoodProvider(),orderRequest.getProducts2delivery());
+
+        } else {
+            System.out.println("Your order in " + orderRequest.foodProvider.getName() +
+            " has been rejected.");
+            orderRequest.getFoodProvider().OrderFalseResponse();
+        }
+    }
 }

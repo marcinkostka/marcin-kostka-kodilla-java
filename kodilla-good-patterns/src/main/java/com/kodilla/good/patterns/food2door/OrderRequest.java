@@ -1,12 +1,12 @@
 package com.kodilla.good.patterns.food2door;
 
-import java.util.Map;
+import java.util.List;
 
 public class OrderRequest {
     FoodProvider foodProvider;
-    Map<Product,Integer> products2delivery;
+    private List<Product> products2delivery;
 
-    public OrderRequest(FoodProvider foodProvider, Map<Product, Integer> products2delivery) {
+    OrderRequest(FoodProvider foodProvider, List<Product> products2delivery) {
         this.foodProvider = foodProvider;
         this.products2delivery = products2delivery;
     }
@@ -15,7 +15,7 @@ public class OrderRequest {
         return foodProvider;
     }
 
-    public Map<Product, Integer> getProducts2delivery() {
+    public List<Product> getProducts2delivery() {
         return products2delivery;
     }
 }

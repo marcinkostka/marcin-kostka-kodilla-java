@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderRequestRetriever {
+
     public OrderRequest retrieve() {
         User user = new User("Kowalski", "kowalski@kodilla.pl");
         Product product1 = new Product("pomidor", 3, 2.0);

@@ -1,17 +1,24 @@
 package com.kodilla.good.patterns.food2door;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderRequestRetriever {
-    public OrderRequest retrieve() {
-        Map<Product,Integer> productList = new HashMap<>();
+    public OrderRequest retrieve(FoodProvider foodProvider) {
+        List<Product> productList = new ArrayList<>();
 
-        productList.put(new Product("Salatka warzywna", 15.0),2);
-        productList.put(new Product("Koktajl owocowy", 10.0),1);
-        productList.put(new Product("Bulki fit", 8.0),3);
+        productList.add(new Product("Salatka warzywna", 5.0,1));
+        productList.add(new Product("Koktajl owocowy", 15.0,1));
+        productList.add(new Product("Bulki fit", 8.0,1));
 
-        FoodProvider foodProvider = new FoodProvider("GoodFood","Katowice");
+        if (foodProvider instanceof ExtraFoodShop) {
+            foodProvider = new ExtraFoodShop();
+        }
+        else if (foodProvider instanceof GlutenFreeShop) {
+            foodProvider = new GlutenFreeShop();
+        } else {
+            foodProvider = new HealthyShop();
+        }
 
         return new OrderRequest(foodProvider, productList);
     }
