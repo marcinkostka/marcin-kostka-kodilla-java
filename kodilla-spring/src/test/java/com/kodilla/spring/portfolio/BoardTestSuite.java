@@ -1,7 +1,5 @@
 package com.kodilla.spring.portfolio;
 
-import com.kodilla.spring.portfoilio.Board;
-import com.kodilla.spring.portfoilio.BoardConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

@@ -1,4 +1,4 @@
-package com.kodilla.spring.portfoilio;
+package com.kodilla.spring.portfolio;
 
 public class Board {
     private TaskList toDoList;
