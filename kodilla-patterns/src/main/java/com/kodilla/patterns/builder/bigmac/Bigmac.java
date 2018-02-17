@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bigmac {
-    public final static String SEZAM = "sezam";
+    public final static String SESAME = "sesame";
     public final static String PLAIN = "plain";
     public final static String STANDARD = "standard";
     public final static String THOUSAND_ISLANDS = "thousand islands";
@@ -30,13 +30,13 @@ public class Bigmac {
         private List<String> ingredients = new ArrayList<>();
 
         BigmacBuilder roll(String roll) throws BigmacException {
-            if(roll.equals(Bigmac.PLAIN) || roll.equals(Bigmac.SEZAM)){
+            if(roll.equals(Bigmac.PLAIN) || roll.equals(Bigmac.SESAME)){
                 this.roll = roll;
                 return this;
             } else if(roll.length() == 0) {
-                throw new BigmacException("You have to choose 'plain' roll or 'sezam' roll");
+                throw new BigmacException("You have to choose 'plain' roll or 'sesame' roll");
             } else {
-                throw new BigmacException("You can choose: 'plain' roll or 'sezam' roll");
+                throw new BigmacException("You can choose: 'plain' roll or 'sesame' roll");
             }
         }
 

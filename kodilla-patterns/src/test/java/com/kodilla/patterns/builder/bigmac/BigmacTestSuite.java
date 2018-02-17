@@ -18,6 +18,7 @@ public class BigmacTestSuite {
                     .ingredient("onion")
                     .sauce("barbecue")
                     .build();
+
             System.out.println(bigmac);
         } catch (BigmacException e) {
             System.out.println("Error: "+e);
