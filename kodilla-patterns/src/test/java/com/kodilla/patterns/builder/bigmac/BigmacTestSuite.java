@@ -11,7 +11,7 @@ public class BigmacTestSuite {
 
         try {
             bigmac = new Bigmac.BigmacBuilder()
-                    .roll("sezam")
+                    .roll("sesame")
                     .burgers(2)
                     .ingredient("chili")
                     .ingredient("cheese")
@@ -32,7 +32,7 @@ public class BigmacTestSuite {
 
         //Then
         Assert.assertEquals(2,burgersQuantity);
-        Assert.assertEquals("sezam",rollChosen);
+        Assert.assertEquals("sesame",rollChosen);
         Assert.assertEquals("barbecue",sauceChosen);
         Assert.assertEquals(3,ingredientsQuantity);
     }
@@ -41,7 +41,7 @@ public class BigmacTestSuite {
     public void testBigmacExceptions() throws BigmacException {
         //Given
           Bigmac bigmac = new Bigmac.BigmacBuilder()
-                    .roll("sezam")
+                    .roll("sesame")
                     //.burgers(2)
                     .ingredient("chili")
                     .ingredient("cheese")
