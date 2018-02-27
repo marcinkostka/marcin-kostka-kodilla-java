@@ -3,9 +3,13 @@ package com.kodilla.sudoku;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SudokuBoard {
+public class SudokuBoard extends Prototype{
 
     List<SudokuRow> rowsList = new ArrayList<>(9);
+
+    public void addRow(SudokuRow sudokuRow) {
+        rowsList.add(sudokuRow);
+    }
 
     public void initBoard() {
 
@@ -18,6 +22,28 @@ public class SudokuBoard {
                 sudokuRow.elementsList.add(sudokuElement);
             }
         }
+    }
+
+    public SudokuBoard deepCopy() throws CloneNotSupportedException {
+        SudokuBoard clonedSudokuBoard = (SudokuBoard)super.clone();
+        clonedSudokuBoard.rowsList = new ArrayList<>();
+
+        for(SudokuRow sudokuRow: rowsList) {
+            SudokuRow clonedSudokuRow = new SudokuRow();
+
+            for (SudokuElement sudokuElement: sudokuRow.getElementsList()) {
+                SudokuElement clonedSudokuElement = new SudokuElement();
+                clonedSudokuElement.setValue(sudokuElement.getValue());
+                clonedSudokuElement.getPossibleValues().clear();
+
+                for (Integer value: sudokuElement.getPossibleValues()) {
+                    clonedSudokuElement.addValue(value);
+                }
+                clonedSudokuRow.addElement(clonedSudokuElement);
+            }
+            clonedSudokuBoard.addRow(clonedSudokuRow);
+        }
+        return clonedSudokuBoard;
     }
 /*
     public void printPossibleValues() {

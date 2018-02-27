@@ -5,7 +5,7 @@ import org.junit.Test;
 public class SudokuTestSuite {
 
     @Test
-    public void testPrintBoard() {
+    public void testPrintBoard() throws CloneNotSupportedException{
         //Given
         SudokuBoard sudokuBoard = new SudokuBoard();
         sudokuBoard.initBoard();
@@ -42,8 +42,14 @@ public class SudokuTestSuite {
         //When
 
         System.out.println(sudokuBoard);
+        SudokuBoard clone = sudokuBoard.deepCopy();
+
         sudokuBoard.solveSudoku();
         System.out.println(sudokuBoard);
+        System.out.println(clone);
+
+        clone.solveSudoku();
+        System.out.println(clone);
 
         /*
         for(int i=3; i<6; i++) {

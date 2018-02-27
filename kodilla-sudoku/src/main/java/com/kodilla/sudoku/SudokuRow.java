@@ -10,4 +10,14 @@ public class SudokuRow {
         return elementsList;
     }
 
+    public void addElement(SudokuElement sudokuElement) {
+        elementsList.add(sudokuElement);
+    }
+
+    @Override
+    public String toString() {
+        return "SudokuRow{" +
+                "elementsList=" + elementsList +
+                '}';
+    }
 }
