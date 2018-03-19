@@ -3,130 +3,94 @@ package com.kodilla.sudoku;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SudokuBoard extends Prototype{
+public class SudokuBoard {
+    private List<SudokuRow> rowsList = new ArrayList<>();
 
-    List<SudokuRow> rowsList = new ArrayList<>(9);
-
-    public void addRow(SudokuRow sudokuRow) {
-        rowsList.add(sudokuRow);
+    SudokuBoard() {
+        for (int n=0; n<9; n++) {
+            rowsList.add(new SudokuRow());
+        }
     }
 
-    public void initBoard() {
+    public void setValue(int row,int col, int value) {
+        rowsList.get(row).getElementsList().get(col).setValue(value);
+    }
 
-        for (int row = 0; row < 9; row++) {
-            SudokuRow sudokuRow = new SudokuRow();
-            rowsList.add(sudokuRow);
+    public Integer getValue(int row, int col) {
+        return rowsList.get(row).getElementsList().get(col).getValue();
+    }
 
+    public boolean resolveSudoku(SudokuBoard sudokuBoard) {
+        for (int row=0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                SudokuElement sudokuElement = new SudokuElement();
-                sudokuRow.elementsList.add(sudokuElement);
-            }
-        }
-    }
 
-    public SudokuBoard deepCopy() throws CloneNotSupportedException {
-        SudokuBoard clonedSudokuBoard = (SudokuBoard)super.clone();
-        clonedSudokuBoard.rowsList = new ArrayList<>();
+                if(sudokuBoard.getValue(row,col)!= SudokuElement.EMPTY) {
+                    sudokuBoard.rowsList.get(row).getElementsList().get(col).getPossibleValues().clear();
 
-        for(SudokuRow sudokuRow: rowsList) {
-            SudokuRow clonedSudokuRow = new SudokuRow();
-
-            for (SudokuElement sudokuElement: sudokuRow.getElementsList()) {
-                SudokuElement clonedSudokuElement = new SudokuElement();
-                clonedSudokuElement.setValue(sudokuElement.getValue());
-                clonedSudokuElement.getPossibleValues().clear();
-
-                for (Integer value: sudokuElement.getPossibleValues()) {
-                    clonedSudokuElement.addValue(value);
-                }
-                clonedSudokuRow.addElement(clonedSudokuElement);
-            }
-            clonedSudokuBoard.addRow(clonedSudokuRow);
-        }
-        return clonedSudokuBoard;
-    }
-/*
-    public void printPossibleValues() {
-        for (int i=0;i<9;i++){
-            for (int j=0;j<9;j++){
-                System.out.println("value: "+rowsList.get(j).getElementsList().get(i).getValue()+
-                        " i: "+i+",j: "+j+ " list: "+ rowsList.get(j).getElementsList().get(i).getPossibleValues());
-            }
-        }
-    }
- */
-
-    public void solveSudoku() {
-        while (isOnlyOnePossibleValue()){
-
-        }
-    }
-
-    private boolean isOnlyOnePossibleValue() {
-            for (int row = 0; row < 9; row++) {
-                for (int col = 0; col < 9; col++) {
-                    if (rowsList.get(row).getElementsList().get(col).getPossibleValues().size() == 1) {
-                        setValue(col+1, row+1, rowsList.get(row).getElementsList().get(col).getPossibleValues().get(0));
-                        return true;
+                    //update possible values in every Elements in row
+                    for (int col2 = 0; col2 < 9; col2++) {
+                        if(sudokuBoard.rowsList.get(row).getElementsList().get(col2).getPossibleValues()
+                                .contains(sudokuBoard.getValue(row,col))){
+                            sudokuBoard.rowsList.get(row).getElementsList().get(col2).getPossibleValues()
+                                    .remove(sudokuBoard.getValue(row,col));
+                        }
                     }
-                }
-            }
-        return false;
-    }
-
-
-    public void setValue (int x, int y, Integer value) {
-        x = x-1;
-        y = y-1;
-        if(rowsList.get(y).getElementsList().get(x).getValue() == SudokuElement.EMPTY) {
-            if (rowsList.get(y).getElementsList().get(x).getPossibleValues().contains(value)) {
-                rowsList.get(y).getElementsList().get(x).setValue(value);
-                rowsList.get(y).getElementsList().get(x).getPossibleValues().clear();
-
-                //update possible values in every Elements in col
-                for (int col = 0; col < 9; col++) {
-                    if(rowsList.get(y).getElementsList().get(col).getPossibleValues().contains(value)){
-                        rowsList.get(y).getElementsList().get(col).getPossibleValues().remove(value);
+                    //update possible values in every Elements in col
+                    for (int row2 = 0; row2 < 9; row2++) {
+                        if(sudokuBoard.rowsList.get(row2).getElementsList().get(col).getPossibleValues()
+                                .contains(sudokuBoard.getValue(row,col))){
+                            sudokuBoard.rowsList.get(row2).getElementsList().get(col).getPossibleValues()
+                                    .remove(sudokuBoard.getValue(row,col));
+                        }
                     }
-                }
-
-                //update possible values in every Elements in row
-                for (int row = 0; row < 9; row++) {
-                    if(rowsList.get(row).getElementsList().get(x).getPossibleValues().contains(value)){
-                        rowsList.get(row).getElementsList().get(x).getPossibleValues().remove(value);
-                    }
-                }
-
-                //update possible values in every Elements in small Square 3x3
-                for(int i=0; i<3; i++) {
-                    for (int j=0; j<3;j++) {
-                        if(rowsList.get((y/3)*3+j).getElementsList().get((x/3)*3+i).getPossibleValues().contains(value)){
-                            rowsList.get((y/3)*3+j).getElementsList().get((x/3)*3+i).getPossibleValues().remove(value);
+                    //update possible values in every Elements in small Square 3x3
+                    for(int i=0; i<3; i++) {
+                        for (int j=0; j<3;j++) {
+                            if(rowsList.get((row/3)*3+j).getElementsList().get((col/3)*3+i).getPossibleValues()
+                                    .contains(sudokuBoard.getValue(row,col))){
+                                rowsList.get((row/3)*3+j).getElementsList().get((col/3)*3+i).getPossibleValues()
+                                        .remove(sudokuBoard.getValue(row,col));
+                            }
                         }
                     }
                 }
             }
         }
+        //set value if element has one possibleValue
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (sudokuBoard.rowsList.get(row).getElementsList().get(col).getPossibleValues().size() == 1) {
+                    int value = sudokuBoard.rowsList.get(row).getElementsList().get(col).getPossibleValues().get(0);
+                    sudokuBoard.setValue(row,col,value);
+                    resolveSudoku(this);
+                    break;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        String result = "";
+        String result = "-";
         for(int col = 0; col < 9; col++) {
-            result += "--";
+            result += "----";
         }
         result += "\n";
         for(int row = 0; row < 9; row++) {
             result += "|";
             for (int col = 0; col < 9; col++) {
                 int sudokuElementValue = rowsList.get(row).getElementsList().get(col).getValue();
-                result += sudokuElementValue + "|";
+                String s = sudokuElementValue != 0 ? "" + sudokuElementValue : " ";
+
+                result += " " + s + " |";
             }
             result += "\n";
-        }
-
-        for(int col = 0; col < 9; col++) {
-            result += "--";
+            result += "-";
+            for(int col = 0; col < 9; col++) {
+                result += "----";
+            }
+            result += "\n";
         }
         return result;
     }

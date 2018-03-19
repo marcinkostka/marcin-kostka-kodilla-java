@@ -1,68 +1,107 @@
 package com.kodilla.sudoku;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class SudokuTestSuite {
 
     @Test
-    public void testPrintBoard() throws CloneNotSupportedException{
+    public void testFillExampleData() {
         //Given
+        SudokuGame sudokuGame = new SudokuGame();
         SudokuBoard sudokuBoard = new SudokuBoard();
-        sudokuBoard.initBoard();
-
-        sudokuBoard.setValue(4,1,2);
-        sudokuBoard.setValue(9,1,3);
-        sudokuBoard.setValue(2,2,7);
-        sudokuBoard.setValue(5,2,9);
-        sudokuBoard.setValue(7,2,2);
-        sudokuBoard.setValue(2,3,6);
-        sudokuBoard.setValue(3,3,1);
-        sudokuBoard.setValue(4,3,5);
-        sudokuBoard.setValue(5,3,8);
-        sudokuBoard.setValue(8,3,4);
-        sudokuBoard.setValue(9,3,9);
-        sudokuBoard.setValue(1,4,8);
-        sudokuBoard.setValue(6,4,4);
-        sudokuBoard.setValue(9,4,1);
-        sudokuBoard.setValue(1,6,7);
-        sudokuBoard.setValue(4,6,8);
-        sudokuBoard.setValue(9,6,4);
-        sudokuBoard.setValue(1,7,5);
-        sudokuBoard.setValue(2,7,9);
-        sudokuBoard.setValue(5,7,7);
-        sudokuBoard.setValue(6,7,8);
-        sudokuBoard.setValue(7,7,3);
-        sudokuBoard.setValue(8,7,1);
-        sudokuBoard.setValue(3,8,4);
-        sudokuBoard.setValue(5,8,3);
-        sudokuBoard.setValue(8,8,5);
-        sudokuBoard.setValue(1,9,6);
-        sudokuBoard.setValue(6,9,1);
 
         //When
-
+        sudokuGame.fillExampleData(sudokuBoard);
+        int value = sudokuBoard.getValue(8,0);
         System.out.println(sudokuBoard);
-        SudokuBoard clone = sudokuBoard.deepCopy();
-
-        sudokuBoard.solveSudoku();
-        System.out.println(sudokuBoard);
-        System.out.println(clone);
-
-        clone.solveSudoku();
-        System.out.println(clone);
-
-        /*
-        for(int i=3; i<6; i++) {
-            for (int j=0; j<3; j++) {
-                System.out.println("value: "+sudokuBoard.rowsList.get(j).getElementsList().get(i).getValue()+
-                        " i: "+(i+1)+",j: "+(j+1)+ " list: "+ sudokuBoard.rowsList.get(j).getElementsList().get(i).getPossibleValues());
-            }
-        }
-        */
-
-        //System.out.println(sudokuBoard.rowsList.get(0).getElementsList().get(2).getPossibleValues());
 
         //Then
+        Assert.assertEquals(3,value);
+    }
 
+    @Test
+    public void testPrintBoard() {
+        //Given
+        SudokuBoard sudokuBoard = new SudokuBoard();
+
+        //When
+        System.out.println(sudokuBoard);
+
+        //Then
+    }
+
+    @Test
+    public void testResolveSudokuCheckValuesInAllRowAndCol() {
+        //Given
+        SudokuGame sudokuGame = new SudokuGame();
+        SudokuBoard sudokuBoard = new SudokuBoard();
+        sudokuGame.fillExampleData(sudokuBoard);
+        sudokuBoard.resolveSudoku(sudokuBoard);
+
+        //When
+        Set<Integer> rowValues = new HashSet<>();
+        Set<Integer> colValues = new HashSet<>();
+
+        int rowSum = 0;
+        int colSum = 0;
+        for (int i=0; i<9; i++)
+        {
+            for (int j=0; j<9; j++) {
+                rowValues.add(sudokuBoard.getValue(i, j));
+                colValues.add(sudokuBoard.getValue(j, i));
+
+                if (rowValues.size() == 9) {
+                    rowSum++;
+                }
+                if (colValues.size() == 9) {
+                    colSum++;
+                }
+            }
+            rowValues.clear();
+            colValues.clear();
+        }
+
+        //Then
+        Assert.assertEquals(9,rowSum);
+        Assert.assertEquals(9,colSum);
+    }
+
+    @Test
+    public void testResolveSudokuCheckValuesInSmallSquare() {
+        //Given
+        SudokuGame sudokuGame = new SudokuGame();
+        SudokuBoard sudokuBoard = new SudokuBoard();
+        sudokuGame.fillExampleData(sudokuBoard);
+        sudokuBoard.resolveSudoku(sudokuBoard);
+
+        //When
+        Set<Integer> values = new HashSet<>();
+
+        for (int i=0; i<3; i++)
+        {
+            for (int j=0; j<3; j++) {
+                values.add(sudokuBoard.getValue(i, j));
+            }
+        }
+
+        //Then
+        Assert.assertEquals(9,values.size());
+    }
+
+    @Test
+    public void testSetValueAndGetValue() {
+        //Given
+        SudokuBoard sudokuBoard = new SudokuBoard();
+
+        //When
+        sudokuBoard.setValue(1,2,6);
+        int value = sudokuBoard.getValue(1,2);
+
+        //Then
+        Assert.assertEquals(6,value);
     }
 }

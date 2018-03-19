@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SudokuRow {
-    List<SudokuElement> elementsList = new ArrayList<>(9);
+    List<SudokuElement> elementsList = new ArrayList<>();
+
+    public SudokuRow() {
+        for(int n=0; n<9; n++) {
+            elementsList.add(new SudokuElement());
+        }
+    }
 
     public List<SudokuElement> getElementsList() {
         return elementsList;
