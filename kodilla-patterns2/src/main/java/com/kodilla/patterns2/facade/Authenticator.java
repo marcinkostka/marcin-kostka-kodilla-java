@@ -8,6 +8,7 @@ import java.util.Random;
 public class Authenticator {
     public boolean isAuthenticator(Long userId) {
         Random random = new Random();
-        return random.nextBoolean();
+        //return random.nextBoolean();
+        return true;
     }
 }

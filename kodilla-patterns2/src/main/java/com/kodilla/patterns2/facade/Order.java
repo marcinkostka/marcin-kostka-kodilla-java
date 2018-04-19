@@ -1,5 +1,7 @@
 package com.kodilla.patterns2.facade;
 
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
