@@ -2,6 +2,8 @@ package com.kodilla.hibernate.manytomany.dao;
 
 import com.kodilla.hibernate.manytomany.Company;
 import com.kodilla.hibernate.manytomany.Employee;
+import com.kodilla.hibernate.manytomany.facade.FindService;
+import com.kodilla.hibernate.manytomany.facade.FindServiceException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,7 +71,7 @@ public class CompanyDaoTestSuite {
 
     @Test
     @Transactional
-    public void testNamedQueries() {
+    public void testNamedQueries() throws FindServiceException{
         //Given
         Employee johnSmith = new Employee("John", "Smith");
         Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
@@ -102,6 +104,7 @@ public class CompanyDaoTestSuite {
         //Then
         Assert.assertEquals(1,employeesByLastName.size());
         Assert.assertEquals(2,companiesWithNameStartsWith.size());
+
         //CleanUp
         try {
             companyDao.deleteAll();

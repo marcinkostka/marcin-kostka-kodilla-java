@@ -56,6 +56,7 @@ public class TaskListDaoTestSuite {
         TaskList taskList = new TaskList("ToDo List", "ToDo tasks");
         taskList.getTasks().add(task);
         taskList.getTasks().add(task2);
+
         task.setTaskList(taskList);
         task2.setTaskList(taskList);
 
