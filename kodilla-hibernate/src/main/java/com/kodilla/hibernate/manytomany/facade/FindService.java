@@ -23,11 +23,10 @@ public class FindService {
     public List<Employee> findEmployeesByNamePattern(String pattern) throws FindServiceException {
         List<Employee> result = employeeDao.findEmployeesByNamePattern(pattern);
 
-        if(result.size() > 0) {
+        if(result.size() == 0) {
             LOGGER.info(FindServiceException.ERR_EMPLOYEE_NOT_FOUND);
             throw new FindServiceException(FindServiceException.ERR_EMPLOYEE_NOT_FOUND);
         } else {
-            LOGGER.info("result Array size: " + result.size());
             return result;
         }
     }
@@ -35,11 +34,10 @@ public class FindService {
     public List<Company> findCompaniesByNamePattern(String pattern) throws FindServiceException {
         List<Company> result = companyDao.findCompaniesByNamePattern(pattern);
 
-        if(result.size() > 0) {
+        if(result.size() == 0) {
             LOGGER.info(FindServiceException.ERR_COMPANY_NOT_FOUND);
             throw new FindServiceException(FindServiceException.ERR_COMPANY_NOT_FOUND);
         } else {
-            LOGGER.info("result Array size: " + result.size());
             return result;
         }
     }
