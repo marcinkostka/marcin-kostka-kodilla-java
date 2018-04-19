@@ -15,7 +15,7 @@ import java.util.List;
         @NamedNativeQuery(
                 name = "Company.findCompaniesByNamePattern",
                 query = "SELECT * FROM COMPANIES" +
-                        " WHERE COMPANY_NAME LIKE CONCAT (:PATTERN,'%')",
+                        " WHERE COMPANY_NAME LIKE CONCAT ('%',:PATTERN,'%')",
                 resultClass = Company.class
         )
 })
